@@ -36,7 +36,7 @@ namespace ErefService
                 
                 var subjects = 
                     node.SelectNodes(".//a[@class='subjects-f']")
-                    .Select(subjectNode => subjectNode.InnerText.Trim())
+                    ?.Select(subjectNode => subjectNode.InnerText.Trim())
                     .ToList();
 
                 var publishedDateTimeString = Regex.Match(
