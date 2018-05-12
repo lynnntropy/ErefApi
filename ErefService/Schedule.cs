@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
-using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ErefService.Models;
@@ -29,7 +27,7 @@ namespace ErefService
             
             foreach (var table in doc.DocumentNode.SelectNodes("//table"))
             {
-                int tableYear = int.Parse(
+                var tableYear = int.Parse(
                     Regex.Match(table.SelectSingleNode(".//caption").InnerText, "Godina studija: (.+)")
                     .Groups[1]
                     .Value
@@ -41,13 +39,13 @@ namespace ErefService
                     var groupNumberSr = row.SelectSingleNode(".//td[2]").InnerText.Trim();
                     var groupNumberHu = row.SelectSingleNode(".//td[4]").InnerText.Trim();
 
-                    int idSr = int.Parse(
+                    var idSr = int.Parse(
                         Regex.Match(row.SelectSingleNode(".//td[2]/a").Attributes["href"].Value, "/id/(.+?)/")
                         .Groups[1]
                         .Value
                     );
                     
-                    int idHu = int.Parse(
+                    var idHu = int.Parse(
                         Regex.Match(row.SelectSingleNode(".//td[4]/a").Attributes["href"].Value, "/id/(.+?)/")
                             .Groups[1]
                             .Value

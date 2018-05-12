@@ -24,15 +24,15 @@ namespace ErefREST.Controllers
         }
         
         [HttpGet("examples/{page=1}")]
-        public async Task<List<EBoardExampleItem>> Examples()
+        public async Task<List<EBoardExampleItem>> Examples(int page)
         {
-            return await _eref.GetExamplesAsync();
+            return await _eref.GetExamplesAsync(page);
         }
         
         [HttpGet("results/{page=1}")]
-        public async Task<List<EBoardResultsitem>> Results()
+        public async Task<List<EBoardResultsitem>> Results(int page)
         {
-            return await _eref.GetResultsAsync();
+            return await _eref.GetResultsAsync(page);
         }
     }
 }

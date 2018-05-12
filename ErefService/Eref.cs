@@ -8,10 +8,10 @@ namespace ErefService
 {
     public class Eref
     {
-        private HttpClient _httpClient;
+        private readonly HttpClient _httpClient;
 
-        private EBoard _eBoard;
-        private Schedule _schedule;
+        private readonly EBoard _eBoard;
+        private readonly Schedule _schedule;
 
         private static HttpClient CreateHttpClient()
         {
