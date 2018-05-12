@@ -11,6 +11,7 @@ namespace ErefService
         private HttpClient _httpClient;
 
         private EBoard _eBoard;
+        private Schedule _schedule;
 
         private static HttpClient CreateHttpClient()
         {
@@ -33,10 +34,13 @@ namespace ErefService
         {
             _httpClient = CreateHttpClient();
             _eBoard = new EBoard(_httpClient);
+            _schedule = new Schedule(_httpClient);
         }
 
         public async Task<List<EBoardNewsItem>> GetNewsAsync(int page = 1) => await _eBoard.GetNewsAsync(page);
         public async Task<List<EBoardResultsitem>> GetResultsAsync(int page = 1) => await _eBoard.GetResultsAsync(page);
         public async Task<List<EBoardExampleItem>> GetExamplesAsync(int page = 1) => await _eBoard.GetExamplesAsync(page);
+
+        public async Task<List<ScheduleItem>> GetScheduleListAsync() => await _schedule.GetScheduleListAsync();
     }
 }
