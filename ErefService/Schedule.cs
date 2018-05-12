@@ -16,9 +16,9 @@ namespace ErefService
             _client = client;
         }
 
-        public async Task<List<ScheduleItem>> GetScheduleListAsync()
+        public async Task<List<ScheduleListItem>> GetScheduleListAsync()
         {
-            var list = new List<ScheduleItem>();
+            var list = new List<ScheduleListItem>();
             
             var html = await _client.GetStringAsync("schedule/groups");
             var doc = new HtmlDocument();
@@ -35,23 +35,51 @@ namespace ErefService
                 foreach (var row in table.SelectNodes(".//tr[.//td]"))
                 {
                     var groupName = row.SelectSingleNode(".//td[1]").InnerText.Trim();
-                    var groupNumber = row.SelectSingleNode(".//td[2]").InnerText.Trim();
+                    var groupNumberSr = row.SelectSingleNode(".//td[2]").InnerText.Trim();
+                    var groupNumberHu = row.SelectSingleNode(".//td[4]").InnerText.Trim();
 
-                    int id = int.Parse(
+                    int idSr = int.Parse(
                         Regex.Match(row.SelectSingleNode(".//td[2]/a").Attributes["href"].Value, "/id/(.+?)/")
                         .Groups[1]
                         .Value
                     );
                     
-                    list.Add(new ScheduleItem
+                    int idHu = int.Parse(
+                        Regex.Match(row.SelectSingleNode(".//td[4]/a").Attributes["href"].Value, "/id/(.+?)/")
+                            .Groups[1]
+                            .Value
+                    );
+                    
+                    list.Add(new ScheduleListItem
                     {
+                        GroupLanguage = ScheduleListItem.LanguageSr,
                         Year = tableYear,
-                        GroupNumber = groupNumber,
+                        GroupNumber = groupNumberSr,
                         GroupName = groupName,
-                        Id = id
+                        Id = idSr
+                    });
+                    
+                    list.Add(new ScheduleListItem
+                    {
+                        GroupLanguage = ScheduleListItem.LanguageHu,
+                        Year = tableYear,
+                        GroupNumber = groupNumberHu,
+                        GroupName = groupName,
+                        Id = idHu
                     });
                 }
             }
+
+            return list;
+        }
+
+        public async Task<List<ScheduleItem>> GetScheduleForGroupAsync(int groupId)
+        {
+            var list = new List<ScheduleItem>();
+            
+            var html = await _client.GetStringAsync($"schedule/groupschedule/id/{groupId}");
+            var doc = new HtmlDocument();
+            doc.LoadHtml(html);
 
             return list;
         }

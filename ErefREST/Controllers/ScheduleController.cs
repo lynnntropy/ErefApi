@@ -18,7 +18,7 @@ namespace ErefREST.Controllers
         }
 
         [HttpGet]
-        public async Task<List<ScheduleItem>> List()
+        public async Task<List<ScheduleListItem>> List()
         {
             return await _eref.GetScheduleListAsync();
         }
