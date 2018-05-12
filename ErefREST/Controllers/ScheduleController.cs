@@ -22,5 +22,11 @@ namespace ErefREST.Controllers
         {
             return await _eref.GetScheduleListAsync();
         }
+
+        [HttpGet("{groupId}")]
+        public async Task<List<ScheduleItem>> Schedule(int groupId)
+        {
+            return await _eref.GetScheduleForGroupAsync(groupId);            
+        }
     }
 }

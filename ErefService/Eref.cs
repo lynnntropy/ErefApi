@@ -42,5 +42,6 @@ namespace ErefService
         public async Task<List<EBoardExampleItem>> GetExamplesAsync(int page = 1) => await _eBoard.GetExamplesAsync(page);
 
         public async Task<List<ScheduleListItem>> GetScheduleListAsync() => await _schedule.GetScheduleListAsync();
+        public async Task<List<ScheduleItem>> GetScheduleForGroupAsync(int groupId) => await _schedule.GetScheduleForGroupAsync(groupId);
     }
 }

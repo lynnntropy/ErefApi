@@ -17,5 +17,12 @@ namespace ErefService.Tests
             var list = _eref.GetScheduleListAsync().Result;
             Assert.True(list.Count > 10);
         }
+        
+        [Fact]
+        public void GetSchedule()
+        {
+            var schedule = _eref.GetScheduleForGroupAsync(393).Result;
+//            Assert.True(list.Count > 10);
+        }
     }
 }

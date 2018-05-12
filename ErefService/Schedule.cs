@@ -1,5 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using ErefService.Models;
@@ -80,6 +83,46 @@ namespace ErefService
             var html = await _client.GetStringAsync($"schedule/groupschedule/id/{groupId}");
             var doc = new HtmlDocument();
             doc.LoadHtml(html);
+
+            var timeslots = doc.DocumentNode.SelectNodes("//tr/th")
+                .Select(timeslot => Regex.Match(timeslot.SelectSingleNode(".//div[@class='schedule_titles_small']").InnerText, "(.+?)h - (.+?)h").Groups)
+                .Select(groups => (start: groups[1].Value, end: groups[2].Value))
+                .ToList();
+            
+            foreach (var scheduleRow in doc.DocumentNode.SelectNodes("//tr[not(.//th)]"))
+            {
+                var day = scheduleRow.SelectSingleNode(".//div[@class='schedule_days']").InnerText.Trim();
+
+                var currentTimeslot = 0;
+                foreach (var scheduleCell in scheduleRow.SelectNodes(".//td[not(.//div[@class='schedule_days'])]"))
+                {
+                    if (scheduleCell.HasClass("no_lecture"))
+                    {
+                        currentTimeslot++;
+                        continue;
+                    }
+                    
+                    var title = scheduleCell.SelectSingleNode(".//div[1]").InnerText.Trim();
+                    var lecturerName = Regex.Match(scheduleCell.SelectSingleNode(".//div[2]").InnerText, "Nastavnik: (.+)").Groups[1].Value;
+                    var roomName = Regex.Match(scheduleCell.SelectSingleNode(".//div[3]").InnerText, "Prostorija: (.+)").Groups[1].Value;
+
+                    var length = int.Parse(scheduleCell.Attributes["colspan"].Value);
+                    var startTimeslot = timeslots[currentTimeslot];
+                    var endTimeslot = timeslots[currentTimeslot + (length - 1)];
+                    
+                    list.Add(new ScheduleItem
+                    {
+                        Day = day,
+                        Title = title,
+                        LecturerName = lecturerName,
+                        RoomName = roomName,
+                        StartTime = startTimeslot.start,
+                        EndTime = endTimeslot.end
+                    });
+
+                    currentTimeslot += length;
+                }
+            }
 
             return list;
         }
