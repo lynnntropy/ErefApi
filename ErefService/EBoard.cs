@@ -83,7 +83,7 @@ namespace ErefService
                 string fileUrl = null;
                 if (attachmentNode != null)
                 {
-                    fileUrl = "https://eref.vts.su.ac.rs/" + attachmentNode.Attributes["href"].Value;                    
+                    fileUrl = "https://eref.vts.su.ac.rs" + attachmentNode.Attributes["href"].Value;                    
                 }
 
                 var publishedDateTimeString = Regex.Match(
