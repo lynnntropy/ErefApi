@@ -9,6 +9,6 @@ namespace ErefService.Models
         public List<string> Subjects { get; set; } = new List<string>();
         public DateTime PublishedDateTime { set; get; }
         public string Title { get; set; }
-        public string Body { get; set; }
+        public string BodyHtml { get; set; }
     }
 }

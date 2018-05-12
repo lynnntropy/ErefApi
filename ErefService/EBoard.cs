@@ -32,7 +32,7 @@ namespace ErefService
             {
                 var author = node.SelectSingleNode(".//a[@class='professor-f']").InnerText;
                 var title = node.SelectSingleNode(".//*[@class='eboard-post-title']").InnerText.Trim();
-                var body = node.SelectSingleNode(".//div[@class='eboard-post-content']").InnerText.Trim();
+                var bodyHtml = node.SelectSingleNode(".//div[@class='eboard-post-content']").InnerHtml.Trim();
                 
                 var subjects = 
                     node.SelectNodes(".//a[@class='subjects-f']")
@@ -55,7 +55,7 @@ namespace ErefService
                     Author = author,
                     Subjects = subjects,
                     Title = title,
-                    Body = body,
+                    BodyHtml = bodyHtml,
                     PublishedDateTime = publishedDateTime
                 });
             }
@@ -76,7 +76,7 @@ namespace ErefService
             {
                 var author = node.SelectSingleNode(".//a[@class='professor-f']").InnerText;
                 var title = node.SelectSingleNode(".//*[@class='eboard-post-title']").InnerText.Trim();
-                var body = node.SelectSingleNode(".//div[@class='eboard-post-content']").InnerText.Trim();
+                var bodyHtml = node.SelectSingleNode(".//div[@class='eboard-post-content']").InnerHtml.Trim();
                 var subject = node.SelectSingleNode(".//a[@class='subjects-f']").InnerText.Trim();
 
                 var attachmentNode = node.SelectSingleNode(".//*[@class='eboard-post-toolbar']//a[@class='examples']");
@@ -102,7 +102,7 @@ namespace ErefService
                     Author = author,
                     Subject = subject,
                     Title = title,
-                    Body = body,
+                    BodyHtml = bodyHtml,
                     PublishedDateTime = publishedDateTime,
                     FileUrl = fileUrl
                 });
